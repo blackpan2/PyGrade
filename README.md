@@ -30,7 +30,7 @@ This is a Python version of the Gradehelp tool reworked in order to make install
         - Identify student directory:
         - regex = "/\w{2}\w?\d{4}/"
 - [x] `for "student" (directory name) in "student_repos": cd "student"/"submission_directory" (submission_directory is parsed from config)`
-        - DONE 3a) "submission_directory" not found present options for other directories
+- [x] "submission_directory" not found present options for other directories
 - [ ] create and set to 0 counter for grade totals (BONUS)
 - [x] git pull
 - [ ] git log -> parse for the date (use to determine if late)
