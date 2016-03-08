@@ -1,8 +1,8 @@
 import argparse
 import os
-import src.Config as Config
+import Config
 import re
-import src.GitFunction as GitFunction
+import GitFunction
 
 __author__ = 'George Herde'
 
