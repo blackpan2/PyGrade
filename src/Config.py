@@ -65,10 +65,10 @@ def parse_config() -> Config:
             item_in = config[section]['input']
             item_out = config[section]['output']
             if str(section_header[0]) == "Diff":
-                diff_item = DiffJob(item_name, item_exe, item_in, item_out)
+                diff_item = DiffJob.DiffJob(item_name, item_exe, item_in, item_out)
                 self.diff_actions.append(diff_item)
             elif str(section_header[0] == "Unit"):
-                unit_item = DiffJob(item_name, item_exe, item_in, item_out)
+                unit_item = DiffJob.DiffJob(item_name, item_exe, item_in, item_out)
                 self.unit_actions.append(unit_item)
     return self
 
@@ -78,7 +78,7 @@ def setup_config(args):
     home_dir = os.path.expanduser('~')
     pwd = pwd.replace(home_dir, '~', 1)
     print("\nGRADING {}".format(args.grade))  # Print processing statement, to confirm selection
-    print("Config file: {}/{}/config.ini".format(pwd, args.grade))  # Print config file which will be used
+    print("Config file: {}/{}config.ini".format(pwd, args.grade))  # Print config file which will be used
     try:
         os.chdir("./{}".format(args.grade))  # Move into the provided directory
         config_file = parse_config()
