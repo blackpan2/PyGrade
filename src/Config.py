@@ -40,24 +40,29 @@ class Config():
 
 
 def parse_config() -> Config:
-    self = Config(dir=None, required_files=None, due_date=None)
+    config_obj = Config(dir=None, required_files=None, due_date=None)
     config = configparser.ConfigParser()
     config.read('config.ini')
     for section in config.sections():
         if str(section) == "Default":
+            default = config['Default']
             # Submission folder name
-            self.dir = config['Default']['folder']
+            config_obj.dir = default['folder']
             # Comma separated list of the files required for submission
-            self.required_files = str(config['Default']['source']).split(',')
+            config_obj.required_files = str(default['source']).split(',')
             # Due Date Formatting:
             # {Number Day 01-31} {Abbreviated Month} {Full Year} {24-Hour}:{Minute}:{Second}--{Timezone}
             # Example: "05 Feb 2016 08:00:00--0500"
-            self.due_date = time.strptime(config['Default']['due'], "%d %b %Y %H:%M:%S-%z")
+            config_obj.due_date = time.strptime(default['due'], "%d %b %Y %H:%M:%S-%z")
             # Supporting files that are needed for grading purposes, can be empty
             # Example: Standardized Header file or a Makefile
-            if 'support files' in config: self.support_files = config.get('Default', 'support files')
+            if ('support files' in default):
+                config_obj.support_files = default['support files']
             # Build command (can be make), can be empty
-            if 'build' in config: self.build = config.get('Default', 'build')
+            print("pre if build")
+            if ('build' in default):
+                print("found build")
+                config_obj.build = default['build']
         else:
             section_header = str(section).split()
             item_name = config[section]['name']
@@ -66,11 +71,11 @@ def parse_config() -> Config:
             item_out = config[section]['output']
             if str(section_header[0]) == "Diff":
                 diff_item = DiffJob.DiffJob(item_name, item_exe, item_in, item_out)
-                self.diff_actions.append(diff_item)
+                config_obj.diff_actions.append(diff_item)
             elif str(section_header[0] == "Unit"):
                 unit_item = DiffJob.DiffJob(item_name, item_exe, item_in, item_out)
-                self.unit_actions.append(unit_item)
-    return self
+                config_obj.unit_actions.append(unit_item)
+    return config_obj
 
 
 def setup_config(args):
