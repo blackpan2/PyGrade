@@ -1,7 +1,6 @@
 ## Exclude PyCharm .idea folder
 .idea
 
-
 ## Exclude Ruby files possibly created in testing
 *.gem
 *.rbc
