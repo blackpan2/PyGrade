@@ -72,6 +72,8 @@ def main():
                 os.chdir(input("Choose an alternative:"))
             print("\nUsing Directory: {}".format(os.path.relpath(os.getcwd(), start=os.getcwd()+"/..")))
             GitFunction.log(config=config_file)
+            print("-------------------------------------------------------------")
+
 
             os.chdir(top_level)
             print("")

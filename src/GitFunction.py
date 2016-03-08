@@ -1,7 +1,7 @@
 import subprocess
 import time
 from GradeHelpUtil import yes_no_question
-from Colorify import green, red
+from Colorify import cyan, green, red, yellow
 
 __author__ = 'George Herde'
 
@@ -25,7 +25,7 @@ def log(config):
     GIT_LOG_FORMAT = ['%H', '%an', '%ad', '%s']
     GIT_LOG_FORMAT = '%x1f'.join(GIT_LOG_FORMAT) + '%x1e'
 
-    p = subprocess.Popen('git log --format="%s"' % GIT_LOG_FORMAT, shell=True, stdout=subprocess.PIPE)
+    p = subprocess.Popen('git log --format="%s" .' % GIT_LOG_FORMAT, shell=True, stdout=subprocess.PIPE)
     (git_log, _) = p.communicate()
     git_log = git_log.decode('ascii')
     git_log = git_log.strip('\n\x1e').split("\x1e")
@@ -44,8 +44,12 @@ def log(config):
     print("Status: {}".format(print_status))
 
     if yes_no_question("View VCS Log?"):
-        log_string=""
-
-        print(git_log)
+        for event in git_log:
+            log_string=""
+            log_string+= yellow("Commit: {}\n".format(event['id']))
+            log_string+= cyan('Author: {}\n'.format(event['author_name']))
+            log_string+= 'Date: {}\n'.format(event['date'])
+            log_string+= '\tMessage: {}\n'.format(event['message'])
+            print(log_string)
     else:
         pass
