@@ -29,11 +29,12 @@ def get_student_directories(start=None):
                     grade_list.append(dir)
             else:
                 excluded.append(dir)
-    print("Starting grading at: {}".format(grade_list[0]))
-    print("Excluded:", end="")
-    for element in excluded:
+    print("Starting Grading at: {}".format(grade_list[0]))
+    print("Excluded: ", end="")
+    for element in excluded[:-1]:
         print("{}".format(element), end=", ")
-    print("\nLoaded {} student repositories".format(len(grade_list)))
+    print("{}".format(excluded[-1]))
+    print("Loaded {} student repositories\n".format(len(grade_list)))
     return grade_list
 
 
@@ -56,18 +57,24 @@ def main():
         ### Generate list of student directories to be graded
         grade_list = get_student_directories(start=args.student)
 
+        ### Reference to move program back to top level after finishing work on a student
+        top_level = os.getcwd()
+
         for student in grade_list:
             print("-------------------------------------------------------------")
-            print("Grading:{} for Assignment:{}".format(student, config_file.dir))
+            print("Grading:{} for Assignment:{}\n".format(student, config_file.dir))
             os.chdir("./{}".format(student))  # Go into the student's directory
+            GitFunction.pull()
             try:
                 os.chdir("./{}".format(config_file.dir))  # Try to move into the assignment directory
             except FileNotFoundError:
                 print("{} Not found.\nAlternate folders:{}".format(config_file.dir, os.listdir(os.getcwd())))
                 os.chdir(input("Choose an alternative:"))
+            print("\nUsing Directory: {}".format(os.path.relpath(os.getcwd(), start=os.getcwd()+"/..")))
+            GitFunction.log(config=config_file)
 
-            GitFunction.pull()
-            os.chdir("../../")
+            os.chdir(top_level)
+            print("")
 
     else:
         parser.print_help()
