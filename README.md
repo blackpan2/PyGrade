@@ -40,12 +40,12 @@ Action items:
 argparse for parsing command line arguments
 
 config elements [+ required, - optional]:
-+ dir
-+ required files
-- support files
-+ due date
-- build (can be make)
-- diff exe
-- diff actions [ DiffJobs]
-- exe
+- + dir
+- + required files
+- - support files
+- + due date
+- - build (can be make)
+- - diff exe
+- - diff actions [ DiffJobs]
+- - exe
 
