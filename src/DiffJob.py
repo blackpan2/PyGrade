@@ -16,14 +16,6 @@ class DiffJob():
         self.output = output
         self.student_output = "student_out.txt"
 
-    def create_student_output(self):
-        bashCommand = "./" + str(self.exe) + " < " + str(self.input) + " > " + str(self.student_output)
-        return bashCommand
-
-    def create_diff_bash(self):
-        if self.student_output :
-            return "diff " + str(self.student_output) + " " + self.output
-
     def clean(self):
         bashCommand = ["rm -f " + str(self.input),
                        "rm -f " + str(self.output),
@@ -33,3 +25,14 @@ class DiffJob():
 
     def __str__(self):
         return "DiffJob:{}".format(str(self.name))
+
+    def create_student_output(self):
+        bashCommand = "./" + str(self.exe) + " < " + str(self.input) + " > " + str(self.student_output)
+        return bashCommand
+
+    def create_diff_bash(self):
+        if self.student_output :
+            return "diff " + str(self.student_output) + " " + self.output
+
+    def execute(self):
+        pass

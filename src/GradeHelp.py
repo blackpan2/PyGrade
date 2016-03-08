@@ -1,9 +1,11 @@
-import argparse
-import os
-import re
 
+import argparse
 import Config
 import GitFunction
+from GradeHelpUtil import yes_no_question, print_array_of_strings
+import Run
+import os
+import re
 
 __author__ = 'George Herde'
 
@@ -31,9 +33,7 @@ def get_student_directories(start=None):
                 excluded.append(dir)
     print("Starting Grading at: {}".format(grade_list[0]))
     print("Excluded: ", end="")
-    for element in excluded[:-1]:
-        print("{}".format(element), end=", ")
-    print("{}".format(excluded[-1]))
+    print_array_of_strings(excluded)
     print("Loaded {} student repositories\n".format(len(grade_list)))
     return grade_list
 
@@ -70,9 +70,19 @@ def main():
             except FileNotFoundError:
                 print("{} Not found.\nAlternate folders:{}".format(config_file.dir, os.listdir(os.getcwd())))
                 os.chdir(input("Choose an alternative:"))
+
             print("\nUsing Directory: {}".format(os.path.relpath(os.getcwd(), start=os.getcwd()+"/..")))
             GitFunction.log(config=config_file)
             print("-------------------------------------------------------------")
+
+            build = True
+            if not Run.confirm_files(config=config_file):
+                print("Directory Contains:")
+                print_array_of_strings(os.listdir(os.getcwd()))
+                build = yes_no_question("\nMissing required files. Continue with build?", y_default=False)
+
+            if config_file.build is not None and build == True:
+                Run.build(config_file)
 
 
             os.chdir(top_level)
