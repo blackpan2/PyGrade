@@ -1,4 +1,4 @@
-from DiffJob import DiffJob
+import src.DiffJob as DiffJob
 import configparser
 import time
 import os
