@@ -32,7 +32,7 @@ This is a Python version of the Gradehelp tool reworked in order to make install
 - [x] `for "student" (directory name) in "student_repos": cd "student"/"submission_directory" (submission_directory is parsed from config)`
         - DONE 3a) "submission_directory" not found present options for other directories
 - [ ] create and set to 0 counter for grade totals (BONUS)
-- [ ] git pull
+- [x] git pull
 - [ ] git log -> parse for the date (use to determine if late)
 - [ ] check for required files (print if present or not)
 - [ ] move support files
