@@ -78,7 +78,7 @@ def setup_config(args):
     home_dir = os.path.expanduser('~')
     pwd = pwd.replace(home_dir, '~', 1)
     print("\nGRADING {}".format(args.grade))  # Print processing statement, to confirm selection
-    print("Config file: {}/{}config.ini".format(pwd, args.grade))  # Print config file which will be used
+    print("Config file: {}/{}/config.ini".format(pwd, args.grade))  # Print config file which will be used
     try:
         os.chdir("./{}".format(args.grade))  # Move into the provided directory
         config_file = parse_config()
