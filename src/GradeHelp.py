@@ -1,7 +1,8 @@
 import argparse
 import os
-import Config
 import re
+
+import Config
 import GitFunction
 
 __author__ = 'George Herde'
@@ -61,13 +62,12 @@ def main():
             os.chdir("./{}".format(student))  # Go into the student's directory
             try:
                 os.chdir("./{}".format(config_file.dir))  # Try to move into the assignment directory
-                GitFunction.pull()
-                os.chdir("../")
             except FileNotFoundError:
                 print("{} Not found.\nAlternate folders:{}".format(config_file.dir, os.listdir(os.getcwd())))
                 os.chdir(input("Choose an alternative:"))
-                os.chdir("../")
-            os.chdir("../")
+
+            GitFunction.pull()
+            os.chdir("../../")
 
     else:
         parser.print_help()

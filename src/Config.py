@@ -1,7 +1,7 @@
-import DiffJob
 import configparser
 import time
 import os
+import DiffJob
 
 __author__ = 'George Herde'
 
@@ -65,10 +65,10 @@ def parse_config() -> Config:
             item_in = config[section]['input']
             item_out = config[section]['output']
             if str(section_header[0]) == "Diff":
-                diff_item = DiffJob(item_name, item_exe, item_in, item_out)
+                diff_item = DiffJob.DiffJob(item_name, item_exe, item_in, item_out)
                 self.diff_actions.append(diff_item)
             elif str(section_header[0] == "Unit"):
-                unit_item = DiffJob(item_name, item_exe, item_in, item_out)
+                unit_item = DiffJob.DiffJob(item_name, item_exe, item_in, item_out)
                 self.unit_actions.append(unit_item)
     return self
 
