@@ -28,9 +28,11 @@ def get_student_directories(start=None):
                     grade_list.append(dir)
             else:
                 excluded.append(dir)
-    print("Starting grading at: {} Repositories in queue: {}".format(grade_list[0], len(grade_list)))
-    # print("Grade list:{}".format(grade_list)) # Testing print statement
-    print("Excluded: {}".format(excluded))
+    print("Starting grading at: {}".format(grade_list[0]))
+    print("Excluded:", end="")
+    for element in excluded:
+        print("{}".format(element), end=", ")
+    print("\nLoaded {} student repositories".format(len(grade_list)))
     return grade_list
 
 
