@@ -1,0 +1,51 @@
+Intruder alert @ 01:01:54: room 2 / sensor 5.
+Temperature alert @ 02:00:00: room 1 / sensor 2 / 49 degrees.
+Intruder alert @ 05:36:26: room 3 / sensor 7.
+Temperature alert @ 10:13:42: room 2 / sensor 9 / 111 degrees.
+Carbon monoxide alert @ 16:20:01: room 3 / sensor 4 / 3001 PPB.
+Intruder alert @ 17:36:06: room 1 / sensor 3.
+*****
+Home Security System: Room 4 @ 23:50:59
+Triggered by sensor 9
+9 total room events
+Sensor 5 @ 22:46:46 temperature reading 75 degrees
+Sensor 2 @ 22:41:34 temperature reading 72 degrees
+Sensor 6 @ 19:01:23 temperature reading 86 degrees
+Sensor 6 @ 18:31:25 temperature reading 85 degrees
+Sensor 5 @ 15:46:06 temperature reading 91 degrees
+*****
+Home Security System: Room 3 @ 23:52:56
+Triggered by sensor 9
+6 total room events
+Sensor 1 @ 21:12:42 temperature reading 68 degrees
+Sensor 4 @ 16:20:01 carbon monoxide reading 3001 PPB
+Sensor 7 @ 12:36:06 carbon monoxide reading 2988 PPB
+Sensor 4 @ 08:20:01 temperature reading 72 degrees
+Sensor 7 @ 05:36:26 intruder alert
+*****
+Home Security System: Room 2 @ 23:53:57
+Triggered by sensor 9
+9 total room events
+Sensor 7 @ 22:20:01 carbon monoxide reading 1156 PPB
+Sensor 2 @ 21:21:35 temperature reading 73 degrees
+Sensor 9 @ 19:42:55 temperature reading 72 degrees
+Sensor 4 @ 16:06:33 carbon monoxide reading 1867 PPB
+Sensor 1 @ 11:20:22 temperature reading 66 degrees
+*****
+Home Security System: Room 1 @ 23:55:58
+Triggered by sensor 9
+8 total room events
+Sensor 2 @ 20:41:55 temperature reading 72 degrees
+Sensor 7 @ 20:17:21 carbon monoxide reading 1058 PPB
+Sensor 3 @ 17:36:06 intruder alert
+Sensor 1 @ 14:17:18 temperature reading 85 degrees
+Sensor 2 @ 12:59:18 temperature reading 77 degrees
+*****
+Home Security System: Room 0 @ 23:59:59
+Triggered by sensor 9
+6 total room events
+Sensor 2 @ 17:41:55 temperature reading 72 degrees
+Sensor 7 @ 11:46:13 carbon monoxide reading 2898 PPB
+Sensor 4 @ 08:52:31 carbon monoxide reading 3000 PPB
+Sensor 2 @ 07:09:43 temperature reading 81 degrees
+Sensor 1 @ 04:10:42 temperature reading 110 degrees

@@ -1,0 +1,25 @@
+---
+folder: CProject2
+due: 27th Apr 2015 23:59:59-05:00
+exe: "!"
+build: "make"
+clean: "make clean"
+support_files: [hs_config.h, hs_util.c, hs_util.h, Makefile]
+source: [hs.c, Makefile, makefile, Activity_Journal.txt]
+
+diff:
+  - name: Stage 1 output
+    exe: hs
+    test_file: hs_l1_in.txt
+    expected_output: hs_l1_out.txt
+  - name: Stage 2 output
+    exe: hs
+    test_file: hs_l2_in.txt
+    expected_output: hs_l2_out.txt
+  - name: Stage 3 output
+    exe: hs
+    test_file: hs_l3_in.txt
+    expected_output: hs_l3_out.txt
+tree:
+  - name: Source tree
+    dir: .
