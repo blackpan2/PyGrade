@@ -33,8 +33,8 @@ This is a Python version of the Gradehelp tool reworked in order to make install
 - [x] "submission_directory" not found present options for other directories
 - [ ] create and set to 0 counter for grade totals (BONUS)
 - [x] git pull
-- [ ] git log -> parse for the date (use to determine if late)
-- [ ] check for required files (print if present or not)
+- [x] git log -> parse for the date (use to determine if late)
+- [x] check for required files (print if present or not)
 - [ ] move support files
 - [ ] run build (which may not exist, in which case do nothing)
 - [ ] if diff: execute diff jobs
