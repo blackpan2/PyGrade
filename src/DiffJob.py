@@ -24,6 +24,7 @@ class DiffJob():
 
 
 def prepare(job, config_location, destination):
+
     shutil.copy("{}/{}".format(config_location, job.input), "{}/{}".format(destination, job.input))
     shutil.copy("{}/{}".format(config_location, job.output), "{}/{}".format(destination, job.output))
 
