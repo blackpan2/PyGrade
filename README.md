@@ -35,10 +35,10 @@ This is a Python version of the Gradehelp tool reworked in order to make install
 - [x] git pull
 - [x] git log -> parse for the date (use to determine if late)
 - [x] check for required files (print if present or not)
-- [ ] move support files
-- [ ] run build (which may not exist, in which case do nothing)
-- [ ] if diff: execute diff jobs
-- [ ] if exe: execute exe
+- [x] move support files
+- [x] run build (which may not exist, in which case do nothing)
+- [x] if diff: execute diff jobs
+- [ ] if unit tests: execute tests
 - [ ] reset the students directory back to their information "git reset && git clean -f"
 
 
