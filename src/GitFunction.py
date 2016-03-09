@@ -1,7 +1,7 @@
 import subprocess
 import time
 from GradeHelpUtil import yes_no_question
-from Colorify import cyan, green, red, yellow
+from Colorify import cyan, green, red, yellow, grey
 
 __author__ = 'George Herde'
 
@@ -14,10 +14,6 @@ def pull():
         pass
     if output is None:
         pass
-
-
-def reset():
-    pass
 
 
 def log(config):
@@ -51,5 +47,12 @@ def log(config):
             log_string += 'Date: {}\n'.format(event['date'])
             log_string += '\tMessage: {}\n'.format(event['message'])
             print(log_string)
-    else:
-        pass
+
+
+def reset():
+    print("{}".format(grey("Resetting student repository")))
+    p = subprocess.Popen('git reset', shell=True, stdout=subprocess.PIPE)
+    (git_reset, _1) = p.communicate()
+    p = subprocess.Popen('git clean -f', shell=True, stdout=subprocess.PIPE)
+    (git_clean, _2) = p.communicate()
+    print("{}".format(green("Reset complete")))
