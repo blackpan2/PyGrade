@@ -1,4 +1,5 @@
 import argparse
+import subprocess
 from Colorify import cyan
 import Config
 import GitFunction
@@ -95,7 +96,7 @@ def main():
                 diff_testing = True
 
             if diff_testing:
-                yes_no_question("\nContinue to Diff Tests?")
+                yes_no_question("\nExecute to Diff Tests?")
                 for job in config_file.diff_actions:
                     print("\n{}".format(cyan(job.__str__())))
                     print("-------------------------------------------------------------")
@@ -114,9 +115,20 @@ def main():
             if unit_testing:
                 pass
 
+            if yes_no_question("View source files?"):
+                vim_array = ["vim","-p"]
+                print("Files opened: {}".format(config_file.required_files))
+                for file in config_file.required_files:
+                    vim_array.append(str(file))
+                output, error = subprocess.Popen(vim_array).communicate()
+
+            os.chdir('..')
+            GitFunction.reset()
             os.chdir(top_level)
-            yes_no_question("\nContinue to next student")
-            print("")
+            if yes_no_question("\nContinue to next student"):
+                print("")
+            else:
+                break
 
     else:
         parser.print_help()

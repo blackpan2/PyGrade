@@ -1,6 +1,4 @@
 import os
-import subprocess
-from Colorify import red
 import shutil
 
 __author__ = 'George Herde'
@@ -20,13 +18,6 @@ class DiffJob():
         self.input = input
         self.output = output
         self.student_output = "student_out.txt"
-
-    def clean(self):
-        bashCommand = ["rm -f " + str(self.input),
-                       "rm -f " + str(self.output),
-                       "rm -f " + str(self.student_output),
-                       "rm -f " + str(self.exe) + " \n"]
-        return bashCommand
 
     def __str__(self):
         return "DiffJob:{}".format(str(self.name))
