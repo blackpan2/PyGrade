@@ -1,7 +1,12 @@
+import os
+import subprocess
+from Colorify import red
+import shutil
+
 __author__ = 'George Herde'
 
-class DiffJob():
 
+class DiffJob():
     def __init__(self, name, exe, input, output):
         """
 
@@ -26,13 +31,17 @@ class DiffJob():
     def __str__(self):
         return "DiffJob:{}".format(str(self.name))
 
-    def create_student_output(self):
-        bashCommand = "./" + str(self.exe) + " < " + str(self.input) + " > " + str(self.student_output)
-        return bashCommand
 
-    def create_diff_bash(self):
-        if self.student_output :
-            return "diff " + str(self.student_output) + " " + self.output
+def prepare(job, config_location, destination):
+    shutil.copy("{}/{}".format(config_location, job.input), "{}/{}".format(destination, job.input))
+    shutil.copy("{}/{}".format(config_location, job.output), "{}/{}".format(destination, job.output))
 
-    def execute(self):
-        pass
+
+def student_output(job):
+    bashCommand = "./" + str(job.exe) + " < " + str(job.input) + " > " + str(job.student_output)
+    os.system(bashCommand)
+
+
+def diff(job):
+    bashCommand = "diff " + str(job.student_output) + " " + job.output
+    os.system(bashCommand)
