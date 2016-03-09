@@ -39,7 +39,7 @@ This is a Python version of the Gradehelp tool reworked in order to make install
 - [x] run build (which may not exist, in which case do nothing)
 - [x] if diff: execute diff jobs
 - [ ] if unit tests: execute tests
-- [ ] reset the students directory back to their information "git reset && git clean -f"
+- [x] reset the students directory back to their information "git reset && git clean -f"
 
 
 argparse for parsing command line arguments
