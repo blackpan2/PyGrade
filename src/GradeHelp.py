@@ -1,9 +1,10 @@
-
 import argparse
+from Colorify import cyan
 import Config
 import GitFunction
 from GradeHelpUtil import yes_no_question, print_array_of_strings
-import Run
+import Build
+from DiffJob import student_output, diff, prepare
 import os
 import re
 
@@ -18,6 +19,7 @@ def init():
     parser.add_argument("-r", "--reset", help="reset all student repositories to their last commit",
                         action="store_true")
     return parser
+
 
 def get_student_directories(start=None):
     grade_list, excluded = [], []
@@ -52,7 +54,7 @@ def main():
         print("reset")
     elif args.grade is not None:
         ### Setup grading process
-        config_file = Config.setup_config(args)
+        config_file, config_location = Config.setup_config(args)
 
         ### Generate list of student directories to be graded
         grade_list = get_student_directories(start=args.student)
@@ -71,21 +73,49 @@ def main():
                 print("{} Not found.\nAlternate folders:{}".format(config_file.dir, os.listdir(os.getcwd())))
                 os.chdir(input("Choose an alternative:"))
 
-            print("\nUsing Directory: {}".format(os.path.relpath(os.getcwd(), start=os.getcwd()+"/..")))
+            print("\nUsing Directory: {}".format(os.path.relpath(os.getcwd(), start=os.getcwd() + "/..")))
             GitFunction.log(config=config_file)
             print("-------------------------------------------------------------")
 
-            build = True
-            if not Run.confirm_files(config=config_file):
+            if config_file.build is not None:
+                build = True
+            else:
+                build = False
+            if not Build.confirm_files(config=config_file):
                 print("Directory Contains:")
                 print_array_of_strings(os.listdir(os.getcwd()))
                 build = yes_no_question("\nMissing required files. Continue with build?", y_default=False)
 
-            if config_file.build is not None and build == True:
-                Run.build(config_file)
+            built = False
+            if config_file.build is not None and build:
+                built = Build.build(config_file)
 
+            diff_testing = False
+            if config_file.diff_actions is not None:
+                diff_testing = True
+
+            if diff_testing:
+                yes_no_question("\nContinue to Diff Tests?")
+                for job in config_file.diff_actions:
+                    print("\n{}".format(cyan(job.__str__())))
+                    print("-------------------------------------------------------------")
+                    prepare(job, config_location, os.getcwd())
+                    student_output(job)
+                    diff(job)
+
+            unit_testing = False
+            if config_file.build is not None and build:
+                if not built:
+                    built = True
+                    unit_testing = Build.build(config_file)
+            elif config_file.build is None and config_file.unit_actions is not None:
+                unit_testing = True
+
+            if unit_testing:
+                pass
 
             os.chdir(top_level)
+            yes_no_question("\nContinue to next student")
             print("")
 
     else:

@@ -1,6 +1,7 @@
 import configparser
 import time
 import os
+
 import DiffJob
 
 __author__ = 'George Herde'
@@ -59,9 +60,7 @@ def parse_config() -> Config:
             if ('support files' in default):
                 config_obj.support_files = default['support files']
             # Build command (can be make), can be empty
-            print("pre if build")
             if ('build' in default):
-                print("found build")
                 config_obj.build = default['build']
         else:
             section_header = str(section).split()
@@ -75,7 +74,7 @@ def parse_config() -> Config:
             elif str(section_header[0] == "Unit"):
                 unit_item = DiffJob.DiffJob(item_name, item_exe, item_in, item_out)
                 config_obj.unit_actions.append(unit_item)
-    return config_obj
+    return config_obj, os.getcwd()
 
 
 def setup_config(args):

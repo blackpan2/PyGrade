@@ -41,15 +41,15 @@ def log(config):
         print_date = green(git_log[0]['date'])
         print_status = green("On Time")
     print('Latest Change: {}'.format(print_date))
-    print("Status: {}".format(print_status))
+    print("Status: {}\n".format(print_status))
 
     if yes_no_question("View VCS Log?"):
         for event in git_log:
-            log_string=""
-            log_string+= yellow("Commit: {}\n".format(event['id']))
-            log_string+= cyan('Author: {}\n'.format(event['author_name']))
-            log_string+= 'Date: {}\n'.format(event['date'])
-            log_string+= '\tMessage: {}\n'.format(event['message'])
+            log_string = ""
+            log_string += yellow("Commit: {}\n".format(event['id']))
+            log_string += cyan('Author: {}\n'.format(event['author_name']))
+            log_string += 'Date: {}\n'.format(event['date'])
+            log_string += '\tMessage: {}\n'.format(event['message'])
             print(log_string)
     else:
         pass
