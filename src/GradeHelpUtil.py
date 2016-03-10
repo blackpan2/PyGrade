@@ -1,3 +1,5 @@
+import shutil
+
 __author__ = 'George Herde'
 
 
@@ -20,3 +22,7 @@ def print_array_of_strings(array):
     for element in array[:-1]:
         print("{}".format(element), end=", ")
     print("{}".format(array[-1]))
+
+def move_support_files(config, config_location, destination):
+    for item in config.support_files:
+        shutil.copy("{}/{}".format(config_location, item), "{}/{}".format(destination, item))

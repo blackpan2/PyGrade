@@ -25,7 +25,7 @@ def exists(filename) -> bool:
 
 def exists_string(boolean):
     if boolean:
-        return "Exists"
+        return green("Exists")
     else:
         return red("MISSING")
 
