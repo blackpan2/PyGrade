@@ -1,7 +1,7 @@
 import configparser
 import time
 import os
-
+import BashJob
 import DiffJob
 
 __author__ = 'George Herde'
@@ -10,7 +10,8 @@ __author__ = 'George Herde'
 class Config():
     def __init__(self, dir, required_files, due_date,
                  support_files=None, build=None,
-                 diff_actions=None, unit_actions=None):
+                 diff_actions=None, unit_actions=None,
+                 bash_actions=None):
         self.dir = dir
         self.required_files = required_files
         self.due_date = due_date
@@ -24,6 +25,10 @@ class Config():
             self.unit_actions = []
         else:
             self.unit_actions = unit_actions
+        if bash_actions == None:
+            self.bash_actions = []
+        else:
+            self.bash_actions = bash_actions
 
     def __str__(self):
         return_string = "Directory: {}\n".format(self.dir)
@@ -62,6 +67,9 @@ def parse_config() -> Config:
             # Build command (can be make), can be empty
             if ('build' in default):
                 config_obj.build = default['build']
+        elif str(section).split()[0] == "Bash":
+            bash_item = BashJob.BashJob(config[section]['name'], config[section]['command'])
+            config_obj.bash_actions.append(bash_item)
         else:
             section_header = str(section).split()
             item_name = config[section]['name']
@@ -72,7 +80,7 @@ def parse_config() -> Config:
                 diff_item = DiffJob.DiffJob(item_name, item_exe, item_in, item_out)
                 config_obj.diff_actions.append(diff_item)
             elif str(section_header[0] == "Unit"):
-                unit_item = DiffJob.DiffJob(item_name, item_exe, item_in, item_out)
+                unit_item = DiffJob.DiffJob(item_name, item_exe)
                 config_obj.unit_actions.append(unit_item)
     return config_obj, os.getcwd()
 

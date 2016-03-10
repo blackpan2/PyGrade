@@ -30,7 +30,7 @@ def log(config):
 
     last_submit_time = time.strptime(git_log[0]['date'], "%a %b %d %H:%M:%S %Y %z")
 
-    if config.due_date > last_submit_time:
+    if config.due_date < last_submit_time:
         print_date = red(git_log[0]['date'])
         print_status = red("Late")
     else:

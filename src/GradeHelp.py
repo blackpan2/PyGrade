@@ -4,10 +4,11 @@ import Config
 from Colorify import cyan
 from DiffJob import student_output, diff, prepare
 import GitFunction
-from GradeHelpUtil import yes_no_question, print_array_of_strings
+from GradeHelpUtil import yes_no_question, print_array_of_strings, move_support_files
 import subprocess
 import os
 import re
+import BashJob
 
 __author__ = 'George Herde'
 
@@ -69,7 +70,8 @@ def main():
             print("Grading:{} for Assignment:{}\n".format(student, config_file.dir))
             os.chdir("{}/{}".format(top_level, student))  # Go into the student's directory
 
-            ###### Update the student repository
+            ###### Reset and then Update the student repository
+            GitFunction.reset()
             GitFunction.pull()
 
             ###### Move into the assignment's directory
@@ -89,45 +91,60 @@ def main():
             GitFunction.log(config=config_file)
             print("-------------------------------------------------------------")
 
+            ###### Prepare assignment folder by moving support files
+            # move_support_files(config_file, config_location, os.getcwd())
+
             ###### Build student source
             if config_file.build is not None:
-                build = True
+                ready_for_build = True
             else:
-                build = False
+                ready_for_build = False
             if not Build.confirm_files(config=config_file):
                 print("Directory Contains:")
                 print_array_of_strings(os.listdir(os.getcwd()))
-                build = yes_no_question("\nMissing required files. Continue with build?", y_default=False)
+                ready_for_build = yes_no_question("\nMissing required files. Continue with build?", y_default=False)
             built = False
-            if config_file.build is not None and build:
+            if config_file.build is not None and ready_for_build:
                 built = Build.build(config_file)
 
             ###### Diff Testing
-            diff_testing = False
-            if config_file.diff_actions is not None:
-                diff_testing = True
-            if diff_testing:
-                yes_no_question("\nExecute to Diff Tests?")
-                for job in config_file.diff_actions:
-                    print("\n{}".format(cyan(job.__str__())))
-                    print("-------------------------------------------------------------")
-                    prepare(job, config_location, os.getcwd())
-                    student_output(job)
-                    diff(job)
+            if len(config_file.diff_actions) != 0:
+                if (yes_no_question("\nExecute to Diff Tests?")):
+                    for job in config_file.diff_actions:
+                        print("\n{}".format(cyan(job.__str__())))
+                        print("-------------------------------------------------------------")
+                        prepare(job, config_location, os.getcwd())
+                        student_output(job)
+                        diff(job)
 
             ###### Unit Testing
-            unit_testing = False
-            if config_file.build is not None and build:
-                if not built:
-                    built = True
-                    unit_testing = Build.build(config_file)
-            elif config_file.build is None and config_file.unit_actions is not None:
-                unit_testing = True
-            if unit_testing:
-                pass
+            if len(config_file.unit_actions) != 0:
+                if (yes_no_question("\nExecute to Unit Tests?")):
+                    for job in config_file.unit_actions:
+                        pass
+                        # print("\n{}".format(cyan(job.__str__())))
+                        # print("-------------------------------------------------------------")
+                        # prepare(job, config_location, os.getcwd())
+                        # student_output(job)
+                        # diff(job)
+
+
+            ###### Extra bash commands
+            if len(config_file.bash_actions) != 0:
+                if (yes_no_question("\nExecute to Additional Bash?")):
+                    for bash in config_file.bash_actions[:-1]:
+                        print("\n{}".format(cyan(bash.__str__())))
+                        print(cyan("-------------------------------------------------------------"))
+                        bash.run()
+                        print("\n")
+                        input("Continue to next bash command...")
+                    bash = config_file.bash_actions[-1]
+                    print("\n{}".format(cyan(bash.name)))
+                    print(cyan("-------------------------------------------------------------"))
+                    bash.run()
 
             ###### View Source Files
-            if yes_no_question("View source files?"):
+            if yes_no_question("\nView source files?"):
                 vim_array = ["vim", "-p"]
                 print("Files opened: {}".format(config_file.required_files))
                 for file in config_file.required_files:
