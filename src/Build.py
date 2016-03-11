@@ -1,26 +1,24 @@
 import os
 import subprocess
-from Colorify import red, green
+from Colorify import red, green, grey
 
 __author__ = 'George Herde'
 
 
 def confirm_files(config) -> bool:
-    required_files = config.required_files
-    all_files = True
-    for item in required_files:
-        check = exists(item)
+    req_files = True
+    print(grey("Required Files:"))
+    for item in config.required_files:
+        check = os.path.exists("{}/{}".format(os.getcwd(), item))
         if not check:
-            all_files = False
+            req_files = False
         print("{}: {}".format(item, exists_string(check)))
-    return all_files
-
-
-def exists(filename) -> bool:
-    for file in os.listdir(os.getcwd()):
-        if file == filename:
-            return True
-    return False
+    print(grey("Supporting Files:"))
+    for item in config.support_files:
+        check = os.path.exists("{}/{}".format(os.getcwd(), item))
+        print("{}: {}".format(item, exists_string(check)))
+    print("\n")
+    return req_files
 
 
 def exists_string(boolean):
@@ -38,7 +36,9 @@ def build(config):
     for command in build_commands:
         output, error = subprocess.Popen(command).communicate()
         if output is not None:
+            print(red("Warning while building"))
             print(output)
+            return False
         if error is not None:
             print(red("Error while building"))
             print(error)

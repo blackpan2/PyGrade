@@ -17,16 +17,16 @@ def pull():
 
 
 def log(config):
-    GIT_COMMIT_FIELDS = ['id', 'author_name', 'date', 'message']
-    GIT_LOG_FORMAT = ['%H', '%an', '%ad', '%s']
-    GIT_LOG_FORMAT = '%x1f'.join(GIT_LOG_FORMAT) + '%x1e'
+    git_commit_fields = ['id', 'author_name', 'date', 'message']
+    git_log_format = ['%H', '%an', '%ad', '%s']
+    git_log_format = '%x1f'.join(git_log_format) + '%x1e'
 
-    p = subprocess.Popen('git log --format="%s" .' % GIT_LOG_FORMAT, shell=True, stdout=subprocess.PIPE)
+    p = subprocess.Popen('git log --format="%s" .' % git_log_format, shell=True, stdout=subprocess.PIPE)
     (git_log, _) = p.communicate()
     git_log = git_log.decode('ascii')
     git_log = git_log.strip('\n\x1e').split("\x1e")
     git_log = [row.strip().split("\x1f") for row in git_log]
-    git_log = [dict(zip(GIT_COMMIT_FIELDS, row)) for row in git_log]
+    git_log = [dict(zip(git_commit_fields, row)) for row in git_log]
 
     last_submit_time = time.strptime(git_log[0]['date'], "%a %b %d %H:%M:%S %Y %z")
 
@@ -52,7 +52,7 @@ def log(config):
 def reset():
     print("{}".format(grey("Resetting student repository")))
     p = subprocess.Popen('git reset', shell=True, stdout=subprocess.PIPE)
-    (git_reset, _1) = p.communicate()
+    p.communicate()
     p = subprocess.Popen('git clean -f', shell=True, stdout=subprocess.PIPE)
-    (git_clean, _2) = p.communicate()
-    print("{}".format(green("Reset complete")))
+    p.communicate()
+    print("{}".format(green("Reset complete\n")))
