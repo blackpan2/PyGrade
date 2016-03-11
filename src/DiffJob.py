@@ -4,7 +4,7 @@ import shutil
 __author__ = 'George Herde'
 
 
-class DiffJob():
+class DiffJob:
     def __init__(self, name, exe, input, output):
         """
 
@@ -29,10 +29,10 @@ def prepare(job, config_location, destination):
 
 
 def student_output(job):
-    bashCommand = "./" + str(job.exe) + " < " + str(job.input) + " > " + str(job.student_output)
-    os.system(bashCommand)
+    bash_command = "./" + str(job.exe) + " < " + str(job.input) + " > " + str(job.student_output)
+    os.system(bash_command)
 
 
 def diff(job):
-    bashCommand = "diff " + str(job.student_output) + " " + job.output
-    os.system(bashCommand)
+    bash_command = "diff " + str(job.student_output) + " " + job.output
+    os.system(bash_command)
