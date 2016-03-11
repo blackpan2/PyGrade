@@ -13,10 +13,12 @@ def confirm_files(config) -> bool:
         if not check:
             req_files = False
         print("{}: {}".format(item, exists_string(check)))
-    print(grey("Supporting Files:"))
-    for item in config.support_files:
-        check = os.path.exists("{}/{}".format(os.getcwd(), item))
-        print("{}: {}".format(item, exists_string(check)))
+    if config.support_files is not None:
+        print("pop{}".format(config.support_files))
+        print(grey("Supporting Files:"))
+        for item in config.support_files:
+            check = os.path.exists("{}/{}".format(os.getcwd(), item))
+            print("{}: {}".format(item, exists_string(check)))
     print("\n")
     return req_files
 
@@ -34,14 +36,11 @@ def build(config):
     for item in build_list:
         build_commands.append(item.split(" "))
     for command in build_commands:
-        output, error = subprocess.Popen(command).communicate()
-        if output is not None:
-            print(red("Warning while building"))
-            print(output)
+        try:
+            proc = subprocess.check_output(command, stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError:
+            print(red("Error or Warning while building"))
             return False
-        if error is not None:
-            print(red("Error while building"))
-            print(error)
-            return False
+        subprocess.Popen(command).communicate()
     print("{}".format(green("Build Successful")))
     return True

@@ -1,12 +1,12 @@
 import argparse
 import Build
 import Config
-from Colorify import cyan
 import GitFunction
-from GradeHelpUtil import yes_no_question, print_array_of_strings, move_support_files, cd_into_assignment
-import subprocess
+from GradeHelpUtil import yes_no_question, print_array_of_strings, move_support_files, cd_into_assignment, \
+    execute_testing, view_source
 import os
 import re
+from Rubric import parse_rubric, Grade
 
 __author__ = 'George Herde'
 
@@ -16,13 +16,17 @@ def init():
     parser.add_argument("-g", "--grade", help="assignment folder (containing config) to be graded")
     parser.add_argument("-s", "--student", help="provide a student's username to start at their folder")
     parser.add_argument("-p", "--pull", help="update all of the student repositories", action="store_true")
-    parser.add_argument("-r", "--reset", help="reset all student repositories to their last commit",
+    parser.add_argument("--reset", help="reset all student repositories to their last commit",
+                        action="store_true")
+    parser.add_argument("-r", "--rubric", help="true/false representing if there is a rubric.ini",
                         action="store_true")
     return parser, parser.parse_args()
 
 
 def get_student_directories(start=None):
     grade_list, excluded = [], []
+    if start is not None:
+        start = start.rstrip('\/')
     for cur_dir in os.listdir(os.getcwd()):
         if os.path.isdir(cur_dir):
             pattern = re.compile('^\w{2}\w?\d{4}$')
@@ -44,12 +48,37 @@ def main():
     parser, args = init()
 
     if args.pull:
-        print("pull")
+        print("Updating Student Repositories:")
+        grade_list = get_student_directories()[0]
+        print("Loaded {} student repositories\n".format(len(grade_list)))
+        # Reference to move program back to top level after finishing work on a student
+        top_level = os.getcwd()
+        # Iterate through the list of folders identified as student folders
+        for student in grade_list:
+            os.chdir("{}/{}".format(top_level, student))  # Go into the student's directory
+            GitFunction.pull()
+            os.chdir(top_level)
+
     elif args.reset:
-        print("reset")
+        print("Resetting Student Repositories:")
+        grade_list = get_student_directories()[0]
+        print("Loaded {} student repositories\n".format(len(grade_list)))
+        # Reference to move program back to top level after finishing work on a student
+        top_level = os.getcwd()
+        # Iterate through the list of folders identified as student folders
+        for student in grade_list:
+            os.chdir("{}/{}".format(top_level, student))  # Go into the student's directory
+            GitFunction.reset()
+            os.chdir(top_level)
+
     elif args.grade is not None:
         # Setup grading process
         config_file, config_location = Config.setup_config(args)
+
+        if config_file.rubric:
+            rubric = parse_rubric(config_file.dir, config_location)
+        else:
+            rubric = None
 
         # Generate list of student directories to be graded
         grade_list, excluded = get_student_directories(start=args.student)
@@ -63,10 +92,18 @@ def main():
 
         # Iterate through the list of folders identified as student folders
         for student in grade_list:
+            # Setup grading object if needed
+            if rubric is not None:
+                grade_category_count = 0
+                student_grade = Grade(username=student,rubric=rubric)
+
             # Start the grading for a new student
             print("-------------------------------------------------------------")
             print("Grading:{} for Assignment:{}\n".format(student, config_file.dir))
             os.chdir("{}/{}".format(top_level, student))  # Go into the student's directory
+
+            if rubric is not None:
+                pass
 
             # Reset and then Update the student repository
             GitFunction.reset()
@@ -75,78 +112,48 @@ def main():
             # Move into the assignment's directory
             if cd_into_assignment(top_level=top_level, student=student, config=config_file):
 
-                # Prints the name of the current folder back to the user
-                print("\nUsing Directory: {}".format(os.path.relpath(os.getcwd(), start=os.getcwd() + "/..")))
-
                 # Git Log information
                 GitFunction.log(config=config_file)
-                print("-------------------------------------------------------------")
 
                 # Build student source (if needed)
-                if config_file.build is not None:
+                if Build.confirm_files(config=config_file):
                     ready_for_build = True
                 else:
-                    ready_for_build = False
-                if not Build.confirm_files(config=config_file):
                     print("Directory Contains:")
                     print_array_of_strings(os.listdir(os.getcwd()))
                     ready_for_build = yes_no_question("\nMissing required files. Continue with build?", y_default=False)
 
-                # Prepare assignment folder by moving support files
-                move_support_files(config_file, config_location, os.getcwd())
-
-                built = ready_for_build
+                built = ready_for_build  # This sets built to True if compiling isn't required
                 if config_file.build is not None and ready_for_build:
+                    # Prepare assignment folder by moving support files
+                    move_support_files(config_file, config_location, os.getcwd())
                     built = Build.build(config_file)
 
                 if not built:
-                    built = yes_no_question("\nError or warning while build. Would you like to continue?", y_default=False)
+                    built = yes_no_question("\nError or warning while build. Would you like to continue?",
+                                            y_default=False)
 
                 if built:
                     if len(config_file.diff_actions) != 0:
                         # Diff Testing
                         if yes_no_question("\nExecute to Diff Tests?"):
-                            for job in config_file.diff_actions:
-                                print("\n{}".format(cyan(job.__str__())))
-                                print("-------------------------------------------------------------")
-                                DiffJob.prepare(job, config_location, os.getcwd())
-                                DiffJob.student_output(job)
-                                DiffJob.diff(job)
+                            execute_testing("diff", config_file.diff_actions, config_location)
 
                     if len(config_file.unit_actions) != 0:
                         # Unit Testing
                         if yes_no_question("\nExecute to Unit Tests?"):
-                            for job in config_file.unit_actions:
-                                print("\n{}".format(cyan(job.__str__())))
-                                print(cyan("-------------------------------------------------------------"))
-                                job.run()
+                            execute_testing("unit", config_file.unit_actions)
 
                     if len(config_file.bash_actions) != 0:
                         # Extra bash commands
                         if yes_no_question("\nExecute Additional Bash?"):
-                            for bash in config_file.bash_actions[:-1]:
-                                print("\n{}".format(cyan(bash.__str__())))
-                                print(cyan("-------------------------------------------------------------"))
-                                bash.run()
-                                print("\n")
-                                input("Continue to next bash command...")
-                            bash = config_file.bash_actions[-1]
-                            print("\n{}".format(cyan(bash.name)))
-                            print(cyan("-------------------------------------------------------------"))
-                            bash.run()
+                            execute_testing("bash", config_file.bash_actions)
 
                     if yes_no_question("\nView source files?"):
-                        # View Source Files
-                        vim_array = ["vim", "-p"]
-                        print("Files opened: {}".format(config_file.required_files))
-                        for file in config_file.required_files:
-                            vim_array.append(str(file))
-                        for file in config_file.support_files:
-                            vim_array.append(str(file))
-                        subprocess.Popen(vim_array).communicate()
+                        view_source(config_file)
 
                     # Restore repository
-                    os.chdir('..')
+                    os.chdir("{}/{}".format(top_level, student))  # Go into the student's directory
                     GitFunction.reset()
 
                 # Go back to top level & proceed to next student
@@ -154,7 +161,7 @@ def main():
                 if yes_no_question("\nContinue to next student"):
                     print("")
                 else:
-                    break  # Ends loop if stopped
+                    break
 
     else:
         parser.print_help()

@@ -47,6 +47,7 @@ def log(config):
             log_string += 'Date: {}\n'.format(event['date'])
             log_string += '\tMessage: {}\n'.format(event['message'])
             print(log_string)
+    print("-------------------------------------------------------------")
 
 
 def reset():
