@@ -152,9 +152,9 @@ def main():
                     if yes_no_question("\nView source files?"):
                         view_source(config_file)
 
-                    # Restore repository
-                    os.chdir("{}/{}".format(top_level, student))  # Go into the student's directory
-                    GitFunction.reset()
+                # Restore repository
+                os.chdir("{}/{}".format(top_level, student))  # Go into the student's directory
+                GitFunction.reset()
 
                 # Go back to top level & proceed to next student
                 os.chdir(top_level)
