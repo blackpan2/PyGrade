@@ -52,8 +52,8 @@ def log(config):
 
 def reset():
     print("{}".format(grey("Resetting student repository")))
-    p = subprocess.Popen('git reset', shell=True, stdout=subprocess.PIPE)
+    p = subprocess.Popen('git reset .', shell=True, stdout=subprocess.PIPE)
     p.communicate()
-    p = subprocess.Popen('git clean -f', shell=True, stdout=subprocess.PIPE)
+    p = subprocess.Popen('git clean . -f', shell=True, stdout=subprocess.PIPE)
     p.communicate()
     print("{}".format(green("Reset complete\n")))
