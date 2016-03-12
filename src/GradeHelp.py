@@ -149,8 +149,8 @@ def main():
                         if yes_no_question("\nExecute Additional Bash?"):
                             execute_testing("bash", config_file.bash_actions)
 
-                    if yes_no_question("\nView source files?"):
-                        view_source(config_file)
+                if yes_no_question("\nView source files?"):
+                    view_source(config_file)
 
                 # Restore repository
                 os.chdir("{}/{}".format(top_level, student))  # Go into the student's directory
