@@ -19,7 +19,7 @@ grading files: Makefile, headerfile1.h
     ; an example would be a c header file.  These files will only be moved if there
     ; is not a version already in the directory
 ; Grading Files are files that you require for grading that aren't being used in
-    ; diff testing (which are copied seperately).  These are supporting files that
+    ; diff testing (which are copied separately).  These are supporting files that
     ; will be copied over even if there is a file by the same name in the assignment
     ; directory
 
@@ -55,14 +55,12 @@ output: chart2.txt
 [Unit 1]
 name: Unit tests
 exe: test
-input: example1.txt
-output: example1.txt
 
     ; For 'Bash' testing:
             ; Example usage: valgrind ./test
                 ; Run the program with valgrind to confirm memory management
-        ; Name provides an idenitfier as the tests are run
-        ; Command is the bash commmand (it will be run exactly as typed)
+        ; Name provides an identifier as the tests are run
+        ; Command is the bash command (it will be run exactly as typed)
 [Bash 1]
 name: Extra Bash Command
 command: echo Hello World
