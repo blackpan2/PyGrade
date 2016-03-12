@@ -14,7 +14,7 @@ def confirm_files(config) -> bool:
             req_files = False
         print("{}: {}".format(item, exists_string(check)))
     if config.support_files is not None:
-        print("pop{}".format(config.support_files))
+        print("{}".format(config.support_files))
         print(grey("Supporting Files:"))
         for item in config.support_files:
             check = os.path.exists("{}/{}".format(os.getcwd(), item))
