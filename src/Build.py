@@ -35,12 +35,17 @@ def build(config):
     build_commands = []
     for item in build_list:
         build_commands.append(item.split(" "))
+    proceed = True
     for command in build_commands:
         try:
-            proc = subprocess.check_output(command, stderr=subprocess.STDOUT)
+            subprocess.check_output(command, stderr=subprocess.STDOUT, universal_newlines=True)
         except subprocess.CalledProcessError:
             print(red("Error or Warning while building"))
-            return False
+            subprocess.Popen(command).communicate()
+            proceed = False
         subprocess.Popen(command).communicate()
-    print("{}".format(green("Build Successful")))
-    return True
+    if proceed:
+        print("{}".format(green("Build Successful")))
+        return proceed
+    else:
+        return proceed
