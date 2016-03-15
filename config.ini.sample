@@ -29,7 +29,7 @@ grading files: Makefile, headerfile1.h
     ; For 'diff' testing:
         ; Name provides an identifier as the tests run
         ; exe is the executable that needs to be run in order to create the
-            ; student's output
+            ; student's output (This should be built in the build command above - if needed)
         ; Input is the input that the executable should be run with in order
             ; to generate the student's output (this is a required field, but
             ; can be an empty file, however if making this empty try looking
