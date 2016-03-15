@@ -37,6 +37,7 @@ def get_student_directories(start=None):
                     grade_list.append(cur_dir)
             else:
                 excluded.append(cur_dir)
+    grade_list.sort()
     return grade_list, excluded
 
 
