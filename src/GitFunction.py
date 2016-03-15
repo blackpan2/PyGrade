@@ -28,27 +28,28 @@ def log(config):
     git_log = [row.strip().split("\x1f") for row in git_log]
     git_log = [dict(zip(git_commit_fields, row)) for row in git_log]
 
-    if len(git_log) is not 0:
-        last_submit_time = time.strptime(git_log[0]['date'], "%a %b %d %H:%M:%S %Y %z")
+    # Currently there is an error that causes the system to close if the student
+    # creates a directory that they then commit, but do not commit any files within it
+    last_submit_time = time.strptime(git_log[0]['date'], "%a %b %d %H:%M:%S %Y %z")
 
-        if config.due_date < last_submit_time:
-            print_date = red(git_log[0]['date'])
-            print_status = red("Late")
-        else:
-            print_date = green(git_log[0]['date'])
-            print_status = green("On Time")
-        print('Latest Change: {}'.format(print_date))
-        print("Status: {}\n".format(print_status))
+    if config.due_date < last_submit_time:
+        print_date = red(git_log[0]['date'])
+        print_status = red("Late")
+    else:
+        print_date = green(git_log[0]['date'])
+        print_status = green("On Time")
+    print('Latest Change: {}'.format(print_date))
+    print("Status: {}\n".format(print_status))
 
-        if yes_no_question("View VCS Log?"):
-            for event in git_log:
-                log_string = ""
-                log_string += yellow("Commit: {}\n".format(event['id']))
-                log_string += cyan('Author: {}\n'.format(event['author_name']))
-                log_string += 'Date: {}\n'.format(event['date'])
-                log_string += '\tMessage: {}\n'.format(event['message'])
-                print(log_string)
-        print("-------------------------------------------------------------")
+    if yes_no_question("View VCS Log?"):
+        for event in git_log:
+            log_string = ""
+            log_string += yellow("Commit: {}\n".format(event['id']))
+            log_string += cyan('Author: {}\n'.format(event['author_name']))
+            log_string += 'Date: {}\n'.format(event['date'])
+            log_string += '\tMessage: {}\n'.format(event['message'])
+            print(log_string)
+    print("-------------------------------------------------------------")
 
 
 def reset():
