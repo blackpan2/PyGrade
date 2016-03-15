@@ -34,5 +34,5 @@ def student_output(job):
 
 
 def diff(job):
-    bash_command = "diff " + str(job.student_output) + " " + job.output
+    bash_command = "diff -b " + str(job.student_output) + " " + job.output
     os.system(bash_command)
