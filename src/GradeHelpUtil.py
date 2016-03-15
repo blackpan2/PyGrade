@@ -44,7 +44,7 @@ def yes_no_question(question_text, y_default=True):
 
 
 def print_array_of_strings(array):
-    array = array.sort()
+    array.sort()
     for element in array[:-1]:
         print("{}".format(element), end=", ")
     print("{}".format(array[-1]))
