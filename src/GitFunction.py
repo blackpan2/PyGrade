@@ -25,9 +25,11 @@ def log(config):
     if config.due_date < last_submit_time:
         print_date = red(git_log[0]['date'])
         print_status = red("Late")
+        late = True
     else:
         print_date = green(git_log[0]['date'])
         print_status = green("On Time")
+        late = False
     print('Latest Change: {}'.format(print_date))
     print("Status: {}\n".format(print_status))
 
@@ -40,6 +42,7 @@ def log(config):
             log_string += '\tMessage: {}\n'.format(event['message'])
             print(log_string)
     print("-------------------------------------------------------------")
+    return late
 
 
 def reset(checkout_executed=False):

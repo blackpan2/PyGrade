@@ -98,11 +98,11 @@ def main():
             # Move into the assignment's directory
             if cd_into_assignment(top_level=top_level, student=student, config=config_file):
 
+                checkout = False
                 # Git Log information
-                GitFunction.log(config=config_file)
-
-                if yes_no_question("Checkout to another commit?",y_default=False):
-                    checkedout = GitFunction.checkout(input("Bash:"))
+                if GitFunction.log(config=config_file):
+                    if yes_no_question("Checkout to another commit?", y_default=False):
+                        checkout = GitFunction.checkout(input("Bash:"))
 
                 # Build student source (if needed)
                 if Build.confirm_files(config=config_file):
@@ -143,7 +143,7 @@ def main():
 
                 # Restore repository
                 os.chdir("{}/{}".format(top_level, student))  # Go into the student's directory
-                GitFunction.reset(checkout_executed=checkedout)
+                GitFunction.reset(checkout_executed=checkout)
 
                 # Go back to top level & proceed to next student
                 os.chdir(top_level)
