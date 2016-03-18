@@ -102,7 +102,7 @@ def main():
                 GitFunction.log(config=config_file)
 
                 if yes_no_question("Checkout to another commit?",y_default=False):
-                    GitFunction.checkout(input("Bash:"))
+                    checkedout = GitFunction.checkout(input("Bash:"))
 
                 # Build student source (if needed)
                 if Build.confirm_files(config=config_file):
@@ -143,7 +143,7 @@ def main():
 
                 # Restore repository
                 os.chdir("{}/{}".format(top_level, student))  # Go into the student's directory
-                GitFunction.reset()
+                GitFunction.reset(checkout_executed=checkedout)
 
                 # Go back to top level & proceed to next student
                 os.chdir(top_level)
