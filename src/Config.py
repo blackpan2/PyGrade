@@ -13,8 +13,7 @@ class Config:
     def __init__(self, assignment_dir, required_files, due_date,
                  support_files=None, grading_files=None,
                  build=None, diff_actions=None,
-                 unit_actions=None, bash_actions=None,
-                 rubric=False):
+                 unit_actions=None, bash_actions=None):
         self.dir = assignment_dir
         self.required_files = required_files
         self.due_date = due_date
@@ -36,7 +35,6 @@ class Config:
             self.grading_files = []
         else:
             self.grading_files = grading_files
-        self.rubric = rubric
 
     def __str__(self):
         return_string = "Directory: {}\n".format(self.dir)
@@ -51,8 +49,8 @@ class Config:
         return return_string
 
 
-def parse_config(rubric) -> Config:
-    config_obj = Config(assignment_dir=None, required_files=None, due_date=None, rubric=rubric)
+def parse_config() -> Config:
+    config_obj = Config(assignment_dir=None, required_files=None, due_date=None)
     config = configparser.ConfigParser()
     config.read('config.ini')
     for section in config.sections():
@@ -108,7 +106,7 @@ def setup_config(args):
     print("Config file: {}/{}/config.ini".format(pwd, args.grade))  # Print config file which will be used
     try:
         os.chdir("./{}".format(args.grade))  # Move into the provided directory
-        config_file = parse_config(args.rubric)
+        config_file = parse_config()
         os.chdir("../")
         # print(config_file) # Prints out processed config
         return config_file  # Load the config file
