@@ -6,7 +6,6 @@ from GradeHelpUtil import yes_no_question, print_array_of_strings, move_support_
     execute_testing, view_source
 import os
 import re
-from Rubric import parse_rubric, Grade
 
 __author__ = 'George Herde'
 
@@ -17,8 +16,6 @@ def init():
     parser.add_argument("-s", "--student", help="provide a student's username to start at their folder")
     parser.add_argument("-p", "--pull", help="update all of the student repositories", action="store_true")
     parser.add_argument("--reset", help="reset all student repositories to their last commit",
-                        action="store_true")
-    parser.add_argument("-r", "--rubric", help="true/false representing if there is a rubric.ini",
                         action="store_true")
     return parser, parser.parse_args()
 
@@ -76,11 +73,6 @@ def main():
         # Setup grading process
         config_file, config_location = Config.setup_config(args)
 
-        if config_file.rubric:
-            rubric = parse_rubric(config_file.dir, config_location)
-        else:
-            rubric = None
-
         # Generate list of student directories to be graded
         grade_list, excluded = get_student_directories(start=args.student)
         print("Starting Grading at: {}".format(grade_list[0]))
@@ -93,18 +85,11 @@ def main():
 
         # Iterate through the list of folders identified as student folders
         for student in grade_list:
-            # Setup grading object if needed
-            if rubric is not None:
-                grade_category_count = 0
-                student_grade = Grade(username=student,rubric=rubric)
 
             # Start the grading for a new student
             print("-------------------------------------------------------------")
             print("Grading:{} for Assignment:{}\n".format(student, config_file.dir))
             os.chdir("{}/{}".format(top_level, student))  # Go into the student's directory
-
-            if rubric is not None:
-                pass
 
             # Reset and then Update the student repository
             GitFunction.reset()
@@ -115,6 +100,9 @@ def main():
 
                 # Git Log information
                 GitFunction.log(config=config_file)
+
+                if yes_no_question("Checkout to another commit?",y_default=False):
+                    GitFunction.checkout(input("Bash:"))
 
                 # Build student source (if needed)
                 if Build.confirm_files(config=config_file):

@@ -6,16 +6,6 @@ from Colorify import cyan, green, red, yellow, grey
 __author__ = 'George Herde'
 
 
-def pull():
-    print("Pulling changes...")
-    process = subprocess.Popen(["git", "pull"])
-    output, error = process.communicate()
-    if error is not None:
-        pass
-    if output is None:
-        pass
-
-
 def log(config):
     git_commit_fields = ['id', 'author_name', 'date', 'message']
     git_log_format = ['%H', '%an', '%ad', '%s']
@@ -54,8 +44,17 @@ def log(config):
 
 def reset():
     print("{}".format(grey("Resetting student repository")))
-    p = subprocess.Popen('git reset .', shell=True, stdout=subprocess.PIPE)
-    p.communicate()
-    p = subprocess.Popen('git clean . -f', shell=True, stdout=subprocess.PIPE)
-    p.communicate()
+    subprocess.Popen('git reset .', shell=True, stdout=subprocess.PIPE).communicate()
+    subprocess.Popen('git clean . -f', shell=True, stdout=subprocess.PIPE).communicate()
     print("{}".format(green("Reset complete\n")))
+
+
+def pull():
+    print("Pulling changes...")
+    process = subprocess.Popen(["git", "pull"])
+    process.communicate()
+
+
+def checkout(bash):
+    print("Checkout out to %s".format(bash))
+    subprocess.Popen('git checkout %s'.format(bash), shell=True, stdout=subprocess.PIPE).communicate()
