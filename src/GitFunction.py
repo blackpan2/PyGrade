@@ -57,4 +57,5 @@ def pull():
 
 def checkout(bash):
     print("Checkout out to %s".format(bash))
-    subprocess.Popen('git checkout %s'.format(bash), shell=True, stdout=subprocess.PIPE).communicate()
+    checkoutCommand = 'git checkout %s'.format(bash)
+    subprocess.Popen(checkoutCommand, shell=True, stdout=subprocess.PIPE).communicate()
