@@ -17,39 +17,34 @@ as well as make it easier to iterate on, then the current version which is a Rub
 - Project will automatically clean upon entering and leaving student repository
 
 ## Project Details
-- Python version: 3
-- Argument Parsing: argparse https://docs.python.org/3.4/library/argparse.html
+- Python version: 3 (Written on 3.4, will work with all python 3 versions)
+- Argument Parsing: [argparse] (https://docs.python.org/3.4/library/argparse.html)
+- Version Control System: [git] (https://git-scm.com/)
+- Configuartion File parsing: [configparser](https://docs.python.org/3.4/library/configparser.html)
+- OS Commands: [os](https://docs.python.org/3.4/library/os.html)
 
-## Plans made with Kocsen 3/4
-### Action items:
-- [x] receive config assignment directory
-- [x] parse config file from directory
-- [x] regex current directory to create a list ("student_repos") of student repositories
-        - Identify student directory:
-        - regex = "/\w{2}\w?\d{4}/"
-- [x] `for "student" (directory name) in "student_repos": cd "student"/"submission_directory" (submission_directory is parsed from config)`
-- [x] "submission_directory" not found present options for other directories
-- [ ] create and set to 0 counter for grade totals (BONUS)
-- [x] git pull
-- [x] git log -> parse for the date (use to determine if late)
-- [x] check for required files (print if present or not)
-- [x] move support files
-- [x] run build (which may not exist, in which case do nothing)
-- [x] if diff: execute diff jobs
-- [x] if unit tests: execute tests
-- [x] if bash commands: executes commands
-- [x] reset the students directory back to their information "git reset && git clean -f"
+## Installation:
+1. Copy the files from the source folder to your target machine.
+2. Make "gradehelp.py" executable
+  * chmod +x gradehelp.py
+3. PyGrade is now installed.
+4. For ease of access setup an alias in your bashrc file to the target location:
+  * alias gradehelp="python3 %PATH%/GradeHelp.py"
+  * %PATH% from ~ to GradeHelp.py
 
+## Running:
+To grade an assignment: gradehelp -g [assignment name]
+- [assignment name] is the folder containing the files to be used for grading (minimum is a config.ini file)
+To grade an assignment starting at a certain student: gradehelp -g [assignment name] -s [student username]
 
+## Commands:
+usage: GradeHelp.py [-h] [-g GRADE] [-s STUDENT] [-p] [--reset]<br />
 
-###config elements [`+` required, `-` optional]:
-- (`+`) dir
-- (`+`) required files
-- (`-`) support files
-- (`+`) due date
-- (`-`) build (can be make)
-- (`-`) diff exe
-- (`-`) diff actions [ DiffJobs]
-- (`-`) exe
-
-
+optional arguments:<br />
+  -h, --help            show this help message and exit <br />
+  -g GRADE, --grade GRADE
+                        assignment folder (containing config) to be graded<br />
+  -s STUDENT, --student STUDENT
+                        provide a student's username to start at their folder<br />
+  -p, --pull            update all of the student repositories<br />
+  --reset               reset all student repositories to their last commit<br />
