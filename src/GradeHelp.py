@@ -102,7 +102,7 @@ def main():
                 # Git Log information
                 if GitFunction.log(config=config_file):
                     if yes_no_question("Checkout to another commit?", y_default=False):
-                        checkout = GitFunction.checkout(input("Bash:"))
+                        checkout = GitFunction.checkout(input("Hash:"))
 
                 # Build student source (if needed)
                 if Build.confirm_files(config=config_file):
