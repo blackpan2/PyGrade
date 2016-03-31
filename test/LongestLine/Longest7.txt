@@ -1,3 +1,0 @@
-short
-very long
-mid
