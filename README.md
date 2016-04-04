@@ -20,7 +20,7 @@ as well as make it easier to iterate on, then the current version which is a Rub
 - Python version: 3 (Written on 3.4, will work with all python 3 versions)
 - Argument Parsing: [argparse] (https://docs.python.org/3.4/library/argparse.html)
 - Version Control System: [git] (https://git-scm.com/)
-- Configuartion File parsing: [configparser](https://docs.python.org/3.4/library/configparser.html)
+- Configuration File parsing: [configparser](https://docs.python.org/3.4/library/configparser.html)
 - OS Commands: [os](https://docs.python.org/3.4/library/os.html)
 
 ## Installation:

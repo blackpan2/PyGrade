@@ -72,13 +72,19 @@ def execute_testing(test_type, job_list, config_location=None):
 
 
 def execute_diff(job_list, config_location):
-    for job in job_list:
+    for job in job_list[:-1]:
         print("\n{}".format(cyan(job.__str__())))
         print("-------------------------------------------------------------")
         prepare(job, config_location, os.getcwd())
         student_output(job)
         diff(job)
         input("Continue to next Diff job...")
+    job = job_list[-1]
+    print("\n{}".format(cyan(job.__str__())))
+    print("-------------------------------------------------------------")
+    prepare(job, config_location, os.getcwd())
+    student_output(job)
+    diff(job)
 
 
 def execute_unit(job_list):
@@ -87,19 +93,23 @@ def execute_unit(job_list):
         print(cyan("-------------------------------------------------------------"))
         job.run()
         input("Continue to next Unit Test job...")
+    job = job_list[-1]
+    print("\n{}".format(cyan(job.__str__())))
+    print(cyan("-------------------------------------------------------------"))
+    job.run()
 
 
 def execute_bash(job_list):
-    for bash in job_list[:-1]:
-        print("\n{}".format(cyan(bash.__str__())))
+    for job in job_list[:-1]:
+        print("\n{}".format(cyan(job.__str__())))
         print(cyan("-------------------------------------------------------------"))
-        bash.run()
+        job.run()
         print("\n")
         input("Continue to next Bash job...")
-    bash = job_list[-1]
-    print("\n{}".format(cyan(bash.name)))
+    job = job_list[-1]
+    print("\n{}".format(cyan(job.name)))
     print(cyan("-------------------------------------------------------------"))
-    bash.run()
+    job.run()
 
 
 def view_source(config):
