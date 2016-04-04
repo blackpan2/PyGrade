@@ -88,7 +88,7 @@ def execute_diff(job_list, config_location):
 
 
 def execute_unit(job_list):
-    for job in job_list:
+    for job in job_list[:-1]:
         print("\n{}".format(cyan(job.__str__())))
         print(cyan("-------------------------------------------------------------"))
         job.run()
