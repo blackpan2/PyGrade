@@ -9,6 +9,8 @@ grading files: Makefile, headerfile1.h
 ; Folder is the name of the assignment directory that submission was expected in
 ; Due is the date and time that the assignment was due
 ; Source is a list of the files that are required to be in the directory/expected
+    ; use "*All" if all files in the directory should be considered source, do not use
+    ; this feature if assignment requires compiling as it will not confirm expected files
 
 ; Build, Support Files, and Grading Files are all optional pieces of information
 ; Build is a comma list of all of the commands that are required to build
