@@ -1,33 +1,31 @@
 import os
 import subprocess
 from Colorify import red, green, grey
-from GradeHelpUtil import print_array_of_strings
 
 __author__ = 'George Herde'
 
 
 def confirm_files(config) -> bool:
-    if config.required_files is "*All*":
-        for item in os.listdir(os.getcwd()):
-            check = os.path.exists("{}/{}".format(os.getcwd(), item))
-            print("{}: {}".format(item, exists_string(check)))
-        return True
-    else:
-        req_files = True
-        print(grey("Required Files:"))
-        for item in config.required_files:
-            check = os.path.exists("{}/{}".format(os.getcwd(), item))
-            if not check:
-                req_files = False
-            print("{}: {}".format(item, exists_string(check)))
-        if config.support_files is not None:
-            print("{}".format(config.support_files))
-            print(grey("Supporting Files:"))
-            for item in config.support_files:
-                check = os.path.exists("{}/{}".format(os.getcwd(), item))
+    req_files = True
+    print(grey("Required Files:"))
+    for item in config.required_files:
+        if item is "*All*":
+            for file in os.listdir(os.getcwd()):
+                check = os.path.exists("{}/{}".format(os.getcwd(), file))
                 print("{}: {}".format(item, exists_string(check)))
-        print("\n")
-        return req_files
+            return True
+        check = os.path.exists("{}/{}".format(os.getcwd(), item))
+        if not check:
+            req_files = False
+        print("{}: {}".format(item, exists_string(check)))
+    if config.support_files is not None:
+        print("{}".format(config.support_files))
+        print(grey("Supporting Files:"))
+        for item in config.support_files:
+            check = os.path.exists("{}/{}".format(os.getcwd(), item))
+            print("{}: {}".format(item, exists_string(check)))
+    print("\n")
+    return req_files
 
 
 def exists_string(boolean):
