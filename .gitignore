@@ -1,3 +1,4 @@
 ## Exclude PyCharm .idea folder
 .idea
 /test/
+src/__pycache__/

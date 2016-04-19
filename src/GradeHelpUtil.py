@@ -126,6 +126,12 @@ def view_source(config):
         for v_file in config.support_files:
             vim_files.append(v_file)
     print("Files opened: {}".format(vim_files))
+    i = 0
     for file in vim_files:
+        if i == 5:
+            subprocess.Popen(vim_array).communicate()
+            vim_array = ["vim", "-p"]
+            i = 0
         vim_array.append(str(file))
+        i+=1
     subprocess.Popen(vim_array).communicate()
