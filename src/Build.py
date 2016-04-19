@@ -8,22 +8,26 @@ __author__ = 'George Herde'
 
 def confirm_files(config) -> bool:
     if config.required_files is "*All*":
-        print_array_of_strings(os.listdir(os.getcwd()))
-    req_files = True
-    print(grey("Required Files:"))
-    for item in config.required_files:
-        check = os.path.exists("{}/{}".format(os.getcwd(), item))
-        if not check:
-            req_files = False
-        print("{}: {}".format(item, exists_string(check)))
-    if config.support_files is not None:
-        print("{}".format(config.support_files))
-        print(grey("Supporting Files:"))
-        for item in config.support_files:
+        for item in os.listdir(os.getcwd()):
             check = os.path.exists("{}/{}".format(os.getcwd(), item))
             print("{}: {}".format(item, exists_string(check)))
-    print("\n")
-    return req_files
+        return True
+    else:
+        req_files = True
+        print(grey("Required Files:"))
+        for item in config.required_files:
+            check = os.path.exists("{}/{}".format(os.getcwd(), item))
+            if not check:
+                req_files = False
+            print("{}: {}".format(item, exists_string(check)))
+        if config.support_files is not None:
+            print("{}".format(config.support_files))
+            print(grey("Supporting Files:"))
+            for item in config.support_files:
+                check = os.path.exists("{}/{}".format(os.getcwd(), item))
+                print("{}: {}".format(item, exists_string(check)))
+        print("\n")
+        return req_files
 
 
 def exists_string(boolean):
