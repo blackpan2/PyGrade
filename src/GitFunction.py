@@ -47,6 +47,7 @@ def log(config):
 
 def reset(checkout_executed=False):
     if checkout_executed:
+        subprocess.Popen('git checkout .', shell=True, stdout=subprocess.PIPE).communicate()
         subprocess.Popen('git checkout master', shell=True, stdout=subprocess.PIPE).communicate()
     print("{}".format(grey("Resetting student repository")))
     subprocess.Popen('git reset .', shell=True, stdout=subprocess.PIPE).communicate()
