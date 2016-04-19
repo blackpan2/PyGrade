@@ -1,11 +1,14 @@
 import os
 import subprocess
 from Colorify import red, green, grey
+from GradeHelpUtil import print_array_of_strings
 
 __author__ = 'George Herde'
 
 
 def confirm_files(config) -> bool:
+    if config.required_files is "*All*":
+        print_array_of_strings(os.listdir(os.getcwd()))
     req_files = True
     print(grey("Required Files:"))
     for item in config.required_files:
