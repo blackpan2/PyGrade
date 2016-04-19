@@ -111,21 +111,26 @@ def main():
                     else:
                         print("Directory Contains:")
                         print_array_of_strings(os.listdir(os.getcwd()))
-                        ready_for_build = yes_no_question("\nMissing required files. Continue with build?", y_default=False)
+                        ready_for_build = yes_no_question("\nMissing required files. Continue with build?",
+                                                          y_default=False)
+
+                    if config_file.build is not None and ready_for_build:
+                        # Prepare assignment folder by moving support files
+                        move_support_files(config_file, config_location, os.getcwd())
+                        built = Build.build(config_file)
                 else:
-                    no_build = True
-
-                built = ready_for_build  # This sets built to True if compiling isn't required
-                if not no_build and ready_for_build:
-                    # Prepare assignment folder by moving support files
+                    built = True
+                    if not Build.confirm_files(config=config_file):
+                        print("Directory Contains:")
+                        print_array_of_strings(os.listdir(os.getcwd()))
+                        yes_no_question("\nMissing required files. Continue?", y_default=False)
                     move_support_files(config_file, config_location, os.getcwd())
-                    built = Build.build(config_file)
 
-                if not built and not no_build:
+                if not built:
                     built = yes_no_question("\nError or warning while build. Would you like to continue?",
                                             y_default=False)
 
-                if built or no_build:
+                if built:
                     if len(config_file.diff_actions) != 0:
                         # Diff Testing
                         if yes_no_question("\nExecute to Diff Tests?"):
