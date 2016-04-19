@@ -12,7 +12,7 @@ def confirm_files(config) -> bool:
         if item is "*All*":
             for file in os.listdir(os.getcwd()):
                 check = os.path.exists("{}/{}".format(os.getcwd(), file))
-                print("{}: {}".format(item, exists_string(check)))
+                print("{}: {}".format(file, exists_string(check)))
             return True
         check = os.path.exists("{}/{}".format(os.getcwd(), item))
         if not check:
