@@ -133,5 +133,5 @@ def view_source(config):
             vim_array = ["vim", "-p"]
             i = 0
         vim_array.append(str(file))
-        i+=1
+        i += 1
     subprocess.Popen(vim_array).communicate()
