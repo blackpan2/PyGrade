@@ -9,7 +9,7 @@ def confirm_files(config) -> bool:
     req_files = True
     print(grey("Required Files:"))
     for item in config.required_files:
-        if item is "*All*":
+        if item == "*All*":
             for file in os.listdir(os.getcwd()):
                 check = os.path.exists("{}/{}".format(os.getcwd(), file))
                 print("{}: {}".format(file, exists_string(check)))
