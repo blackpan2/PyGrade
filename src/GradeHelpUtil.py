@@ -120,7 +120,8 @@ def view_source(config):
         if v_file == "*All*":
             for file in os.listdir(os.getcwd()):
                 vim_files.append(file)
-        vim_files.append(v_file)
+        else:
+            vim_files.append(v_file)
     if config.support_files is not None:
         for v_file in config.support_files:
             vim_files.append(v_file)
